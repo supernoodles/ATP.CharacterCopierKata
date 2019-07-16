@@ -7,43 +7,51 @@
     [TestFixture]
     public class CopierShould
     {
+        private DestinationMock _destination;
+        private SourceStub _source;
+        private Copier _copier;
+
         [Test]
         public void NotCopy_GivenNewLine()
         {
-            var destination = new DestinationMock();
-            var source = new SourceStub('\n');
-            var copier = new Copier(source, destination);
+            SetUpCopierWith("\n");
 
-            copier.Copy();
+            _copier.Copy();
 
-            destination.Letters.Should().Be(string.Empty);
+            _destination.Letters.Should().Be(string.Empty);
         }
 
         [Test]
         public void CopyA_GivenAandNewLine()
         {
-            var destination = new DestinationMock();
-            var source = new SourceStub('A');
-            var copier = new Copier(source, destination);
+            SetUpCopierWith("A");
 
-            copier.Copy();
+            _copier.Copy();
 
-            destination.Letters.Should().Be("A");
+            _destination.Letters.Should().Be("A");
+        }
+
+        private void SetUpCopierWith(string seed)
+        {
+            _destination = new DestinationMock();
+            _source = new SourceStub(seed);
+            _copier = new Copier(_source, _destination);
         }
     }
 
     public class SourceStub :ISource
     {
-        private readonly char _seed;
+        private readonly string _seed;
+        private int _counter = 0;
 
-        public SourceStub(char seed)
+        public SourceStub(string seed)
         {
             _seed = seed;
         }
+
         public char GetChar()
-        {
-            return _seed;
-        }
+            => _seed[_counter++];
+
     }
 
     public class DestinationMock : IDestination
