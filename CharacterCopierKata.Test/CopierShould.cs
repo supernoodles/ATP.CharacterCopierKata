@@ -31,6 +31,18 @@
             _destination.Letters.Should().Be("A");
         }
 
+
+        [Test]
+        public void CopyAB_GivenAandNewLine()
+        {
+            SetUpCopierWith("AB\n");
+
+            _copier.Copy();
+
+            _destination.Letters.Should().Be("AB");
+        }
+
+
         private void SetUpCopierWith(string seed)
         {
             _destination = new DestinationMock();
