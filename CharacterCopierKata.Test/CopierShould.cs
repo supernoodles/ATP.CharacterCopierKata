@@ -11,7 +11,8 @@
         public void NotCopy_GivenNewLine()
         {
             var destination = new DestinationMock();
-            var copier = new Copier(destination);
+            var source = new SourceStub('\n');
+            var copier = new Copier(source, destination);
 
             copier.Copy();
 
@@ -22,7 +23,8 @@
         public void CopyA_GivenAandNewLine()
         {
             var destination = new DestinationMock();
-            var copier = new Copier(destination);
+            var source = new SourceStub('A');
+            var copier = new Copier(source, destination);
 
             copier.Copy();
 
@@ -32,9 +34,15 @@
 
     public class SourceStub :ISource
     {
+        private readonly char _seed;
+
+        public SourceStub(char seed)
+        {
+            _seed = seed;
+        }
         public char GetChar()
         {
-            return '\n';
+            return _seed;
         }
     }
 
