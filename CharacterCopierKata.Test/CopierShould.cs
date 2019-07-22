@@ -3,6 +3,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Source;
+    using System;
 
     [TestFixture]
     public class CopierShould
@@ -24,13 +25,20 @@
         [Test]
         public void CopyA_GivenAandNewLine()
         {
-            SetUpCopierWith("A");
+            SetUpCopierWith("A\n");
 
             _copier.Copy();
 
             _destination.Letters.Should().Be("A");
         }
 
+        [Test]
+        public void Fail_GivenNoNewLine()
+        {
+            SetUpCopierWith("A");
+
+            _copier.Invoking(copier => copier.Copy()).Should().Throw<Exception>();
+        }
 
         [Test]
         public void CopyAB_GivenAandNewLine()
@@ -51,7 +59,7 @@
         }
     }
 
-    public class SourceStub :ISource
+    public class SourceStub : ISource
     {
         private readonly string _seed;
         private int _counter = 0;

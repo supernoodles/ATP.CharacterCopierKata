@@ -11,11 +11,12 @@
             _source = source;
             _destination = destination;
         }
+
         public void Copy()
         {
-            var character  = _source.GetChar();
+            char character;
 
-            if (character != '\n')
+            while ((character = _source.GetChar()) != '\n')
             {
                 _destination.SetChar(character);
             }
